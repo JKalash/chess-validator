@@ -15,7 +15,6 @@ using namespace std;
 
 class Rook : public Piece
 {
-    
 public:
     //Force print overload
     virtual ostream& operator<< (ostream& out) const override
@@ -24,13 +23,12 @@ public:
     }
     
     //List of allowed moves, disregarding board positioning
-    virtual vector<pair<int, int>> legalMoves() override //Note the = 0; This makes the method pure virtual, and makes the class implicitly abstract
+    virtual vector<pair<int, int>> legalMoves() override
     {
         //All locations that share the piece's file (col) or rank (row)
         int row = _location.first, col = _location.second;
         vector<pair<int, int>> locationsWithSameFile{ make_pair(1, col), make_pair(2, col), make_pair(3, col), make_pair(4, col), make_pair(5, col), make_pair(6, col), make_pair(7, col), make_pair(8, col) };
         vector<pair<int, int>> locationsWithSameRank{ make_pair(row, 1), make_pair(row, 2), make_pair(row, 3), make_pair(row, 4), make_pair(row, 5), make_pair(row, 6), make_pair(row, 7), make_pair(row, 8) };
-        
         
         //Remove our location from both lists
         locationsWithSameFile.erase(remove(locationsWithSameFile.begin(), locationsWithSameFile.end(), _location), locationsWithSameFile.end());
@@ -51,7 +49,6 @@ public:
         //Same file or rank
         return _location.first == newLocation.first || _location.second == newLocation.second;
     }
-    
 };
 
 #endif /* Rook_h */

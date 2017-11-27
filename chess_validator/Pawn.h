@@ -21,7 +21,7 @@ class Pawn : public Piece
     }
     
     //List of allowed moves, disregarding board positioning
-    virtual vector<pair<int, int>> legalMoves() override //Note the = 0; This makes the method pure virtual, and makes the class implicitly abstract
+    virtual vector<pair<int, int>> legalMoves() override
     {
         
         //Can move one step forward. Forward for white is upward. Downward if black

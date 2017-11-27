@@ -28,6 +28,10 @@
 		3E4203731FCACC470065BD43 /* Piece.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Piece.h; sourceTree = "<group>"; };
 		3E4203741FCAD2650065BD43 /* Rook.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Rook.h; sourceTree = "<group>"; };
 		3E4203751FCADAED0065BD43 /* Pawn.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Pawn.h; sourceTree = "<group>"; };
+		3E4203761FCC090D0065BD43 /* Knight.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Knight.h; sourceTree = "<group>"; };
+		3E4203771FCC2FE20065BD43 /* Bishop.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bishop.h; sourceTree = "<group>"; };
+		3E4203781FCC31C60065BD43 /* Queen.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Queen.h; sourceTree = "<group>"; };
+		3E4203791FCC34DE0065BD43 /* King.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = King.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +68,10 @@
 				3E4203731FCACC470065BD43 /* Piece.h */,
 				3E4203741FCAD2650065BD43 /* Rook.h */,
 				3E4203751FCADAED0065BD43 /* Pawn.h */,
+				3E4203761FCC090D0065BD43 /* Knight.h */,
+				3E4203771FCC2FE20065BD43 /* Bishop.h */,
+				3E4203781FCC31C60065BD43 /* Queen.h */,
+				3E4203791FCC34DE0065BD43 /* King.h */,
 			);
 			path = chess_validator;
 			sourceTree = "<group>";
