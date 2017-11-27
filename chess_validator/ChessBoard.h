@@ -1,5 +1,5 @@
 //
-//  Board.h
+//  ChessBoard.h
 //  chess_validator
 //
 //  Created by Joseph Kalash on 11/27/17.
@@ -19,13 +19,37 @@
 #include "Queen.h"
 #include "King.h"
 
-class Board
+class ChessBoard
 {
-    vector<vector<Piece *>> board;   //2D array of pointers to pieces. When there is no piece, the pointer is NULL
+    vector<vector<Piece *>> _board;   //2D array of pointers to pieces. When there is no piece, the pointer is NULL
+    
+    void deleteBoard()
+    {
+        for(int i =0; i < _board.size(); i++)
+            for(int j = 0; j < _board[i].size(); j++)
+                if(_board[i][j])
+                    delete _board[i][j];
+    }
 public:
-    Board() {
+    ChessBoard()
+    {
+        resetBoard();
+    }
+    
+    ~ChessBoard()
+    {
+        this->deleteBoard();
+    }
+    
+    
+    void resetBoard()
+    {
         
-        board = vector<vector<Piece *>> {
+        //Delete any existing board
+        deleteBoard();
+        
+        
+        _board = vector<vector<Piece *>> {
             {new Rook(false, make_pair(0, 0)), new Knight(false, make_pair(0, 1)), new Bishop(false, make_pair(0, 2)), new Queen(false, make_pair(0, 3)), new King(false, make_pair(0, 4)), new Bishop(false, make_pair(0, 5)), new Knight(false, make_pair(0, 6)), new Rook(false, make_pair(0, 7))},
             {NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
             {NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
@@ -37,12 +61,10 @@ public:
         };
     }
     
-    ~Board() {
-        for(int i =0; i < board.size(); i++)
-            for(int j = 0; j < board[0].size(); j++)
-                delete board[i][j];
+    void submitMove(string from, string to)
+    {
+        
     }
-    
     
     
 };
