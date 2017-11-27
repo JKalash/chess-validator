@@ -24,7 +24,7 @@ protected:
 public:
     Piece(bool isWhite, const pair<int, int>& initialLocation) : _white(isWhite), _location(initialLocation) { }
     
-    virtual ~Piece() {}
+    virtual ~Piece() { }
     
     pair<int, int> matrixLocation() const
     {
@@ -45,7 +45,7 @@ public:
     }
     
     //Force print overload
-    virtual ostream& operator<< (ostream& out) const;
+    virtual ostream& operator<< (ostream& out) const = 0;
     
     //List of allowed moves, disregarding board positioning
     virtual vector<pair<int, int>> legalMoves() = 0;  //Note the = 0; This makes the method pure virtual, and makes the class implicitly abstract
