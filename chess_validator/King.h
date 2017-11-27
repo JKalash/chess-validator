@@ -18,6 +18,9 @@ class King : public Piece
 {
     
 public:
+    
+    King(bool isWhite, const pair<int, int>& initialLocation) : Piece(isWhite, initialLocation) { }
+    
     //Force print overload
     virtual ostream& operator<< (ostream& out) const override
     {
@@ -56,7 +59,7 @@ public:
     }
     
     //Returns true if piece can do legal move to newLocation
-    virtual bool isLegalMove(pair<int, int> newLocation) override
+    virtual bool isLegalMove(const pair<int, int>& newLocation) override
     {
         //Cannot move to position where we're at
         if ( _location == newLocation) return false;

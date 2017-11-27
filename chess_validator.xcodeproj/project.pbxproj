@@ -32,6 +32,7 @@
 		3E4203771FCC2FE20065BD43 /* Bishop.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bishop.h; sourceTree = "<group>"; };
 		3E4203781FCC31C60065BD43 /* Queen.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Queen.h; sourceTree = "<group>"; };
 		3E4203791FCC34DE0065BD43 /* King.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = King.h; sourceTree = "<group>"; };
+		3E42037A1FCC3BD50065BD43 /* Board.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Board.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +73,7 @@
 				3E4203771FCC2FE20065BD43 /* Bishop.h */,
 				3E4203781FCC31C60065BD43 /* Queen.h */,
 				3E4203791FCC34DE0065BD43 /* King.h */,
+				3E42037A1FCC3BD50065BD43 /* Board.h */,
 			);
 			path = chess_validator;
 			sourceTree = "<group>";

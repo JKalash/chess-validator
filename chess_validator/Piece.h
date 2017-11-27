@@ -22,6 +22,10 @@ protected:
     pair<int, int> _location;
     
 public:
+    Piece(bool isWhite, const pair<int, int>& initialLocation) : _white(isWhite), _location(initialLocation) { }
+    
+    virtual ~Piece() {}
+    
     pair<int, int> matrixLocation() const
     {
         return _location;
@@ -47,7 +51,7 @@ public:
     virtual vector<pair<int, int>> legalMoves() = 0;  //Note the = 0; This makes the method pure virtual, and makes the class implicitly abstract
     
     //Returns true if piece can do legal move to newLocation
-    virtual bool isLegalMove(pair<int, int> newLocation) = 0;
+    virtual bool isLegalMove(const pair<int, int>& newLocation) = 0;
 };
 
 #endif /* Piece_h */

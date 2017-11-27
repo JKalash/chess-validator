@@ -7,12 +7,8 @@
 //
 
 #include <iostream>
-#include "Rook.h"
-#include "Pawn.h"
-#include "Knight.h"
-#include "Bishop.h"
-#include "Queen.h"
-#include "King.h"
+
+#include "Board.h"
 
 int main(int argc, const char * argv[]) {
     // insert code here...

@@ -18,6 +18,9 @@ class Knight : public Piece
 {
     
 public:
+    
+    Knight(bool isWhite, const pair<int, int>& initialLocation) : Piece(isWhite, initialLocation) { }
+    
     //Force print overload
     virtual ostream& operator<< (ostream& out) const override
     {
@@ -33,8 +36,8 @@ public:
         //Allowed moves are the ones at a square distance of 5
         // i.e diff in file squared + diff in rank squared equals 5
         vector<pair<int, int>> legalMoves;
-        for(int i =0; i < 7; i++)
-            for(int j = 0; j < 7; j++) {
+        for(int i =0; i < 8; i++)
+            for(int j = 0; j < 8; j++) {
                 int rank_diff = abs(i - row);
                 int file_diff = abs(j - col);
                 
@@ -46,7 +49,7 @@ public:
     }
     
     //Returns true if piece can do legal move to newLocation
-    virtual bool isLegalMove(pair<int, int> newLocation) override
+    virtual bool isLegalMove(const pair<int, int>& newLocation) override
     {
         //Cannot move to position where we're at
         if ( _location == newLocation) return false;

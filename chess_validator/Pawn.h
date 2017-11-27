@@ -14,6 +14,9 @@
 class Pawn : public Piece
 {
     public:
+    
+    Pawn(bool isWhite, const pair<int, int>& initialLocation) : Piece(isWhite, initialLocation) { }
+    
     //Force print overload
     virtual ostream& operator<< (ostream& out) const override
     {
