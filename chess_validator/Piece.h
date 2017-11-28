@@ -17,9 +17,13 @@ using namespace std;
 
 class Piece
 {
+    friend ostream& operator<<(ostream& os, Piece const& p);
 protected:
     bool _white;
     pair<int, int> _location;
+    
+    //Force print overload
+    virtual ostream& print(ostream& out) const = 0;
     
 public:
     Piece(bool isWhite, const pair<int, int>& initialLocation) : _white(isWhite), _location(initialLocation) { }
@@ -44,14 +48,21 @@ public:
         return _white;
     }
     
-    //Force print overload
-    virtual ostream& operator<< (ostream& out) const = 0;
-    
     //List of allowed moves, disregarding board positioning
     virtual vector<pair<int, int>> legalMoves() = 0;  //Note the = 0; This makes the method pure virtual, and makes the class implicitly abstract
     
     //Returns true if piece can do legal move to newLocation
     virtual bool isLegalMove(const pair<int, int>& newLocation) = 0;
+    
+    void updateLocation(pair<int, int> newLocation)
+    {
+        _location = newLocation;
+    }
 };
+
+ostream& operator<<(std::ostream& os, Piece const& p)
+{
+    return p.print(os);
+}
 
 #endif /* Piece_h */

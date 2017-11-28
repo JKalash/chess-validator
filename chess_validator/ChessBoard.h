@@ -132,7 +132,7 @@ class ChessBoard
                         King* kingTest = dynamic_cast<King *>(_board[i][j]);
                         if(kingTest)
                             //We found the king
-                            kingInCheckPosition = kingTest->matrixLocation();
+                            kingInCheckPosition = make_pair(i, j);
                     }
                 }
         
@@ -140,8 +140,11 @@ class ChessBoard
         //If there is a clear path from a piece to us and we are in its legalMove list, king is in check
         for(Piece * piece : opponentPieces)
         {
-            // Get the piece's legal move list
-            vector<pair<int, int>> legalMoves = piece->legalMoves();
+            // Get the piece's legal move list. Try to cast to pawn, fallback to regular piece
+            Pawn* pawnTest = dynamic_cast<Pawn *>(piece);
+            vector<pair<int, int>> legalMoves;
+            if(pawnTest) legalMoves = pawnTest->pawnLegalMoves(_board);
+            else legalMoves = piece->legalMoves();
             
             //If king position is in legal moves
             if( find(legalMoves.begin(), legalMoves.end(), kingInCheckPosition) != legalMoves.end())
@@ -173,7 +176,7 @@ class ChessBoard
         vector<Piece*> victimPieces;
         for(int i = 0; i < 7; i++)
             for(int j = 0; j < 7; j++)
-                if(_board[i][j]->isWhite() == whiteInCheckmate)
+                if(_board[i][j] && _board[i][j]->isWhite() == whiteInCheckmate)
                     victimPieces.push_back(_board[i][j]);
         
         //A check mate is a state where all potential moves by any of the victim's pieces
@@ -185,7 +188,11 @@ class ChessBoard
             //No need to keep checking if we found a possible move
             if(foundPossibleMove) break;
             
-            vector<pair<int, int>> potentialPieceMoves = potentialPiece->legalMoves();
+            vector<pair<int, int>> potentialPieceMoves;
+            Pawn* pawnTest = dynamic_cast<Pawn *>(potentialPiece);
+            if(pawnTest) potentialPieceMoves = pawnTest->pawnLegalMoves(_board);
+            else potentialPieceMoves = potentialPiece->legalMoves();
+                    
             for(int i = 0; i < potentialPieceMoves.size(); i++)
             {
                 
@@ -196,7 +203,7 @@ class ChessBoard
                      continue;
                 
                 Piece *destination = _board[potentialMove.first][potentialMove.second];
-                if(destination->isWhite() == whiteInCheckmate)  //Destination is same color as our king. cannot move. continue.
+                if(destination && destination->isWhite() == whiteInCheckmate)  //Destination is same color as our king. cannot move. continue.
                     continue;
                 
                 //2. moving there removes check
@@ -237,7 +244,6 @@ public:
         deleteBoard();
     }
     
-    
     void resetBoard()
     {
         
@@ -247,14 +253,17 @@ public:
         
         _board = vector<vector<Piece *>> {
             {new Rook(false, make_pair(0, 0)), new Knight(false, make_pair(0, 1)), new Bishop(false, make_pair(0, 2)), new Queen(false, make_pair(0, 3)), new King(false, make_pair(0, 4)), new Bishop(false, make_pair(0, 5)), new Knight(false, make_pair(0, 6)), new Rook(false, make_pair(0, 7))},
+            {new Pawn(false, make_pair(1, 0)), new Pawn(false, make_pair(1, 1)), new Pawn(false, make_pair(1, 2)), new Pawn(false, make_pair(1, 3)), new Pawn(false, make_pair(1, 4)), new Pawn(false, make_pair(1, 5)), new Pawn(false, make_pair(1, 6)), new Pawn(false, make_pair(1, 7))},
             {NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
             {NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
             {NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
             {NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
-            {NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
-            {NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+            {new Pawn(true, make_pair(6, 0)), new Pawn(true, make_pair(6, 1)), new Pawn(true, make_pair(6, 2)), new Pawn(true, make_pair(6, 3)), new Pawn(true, make_pair(6, 4)), new Pawn(true, make_pair(6, 5)), new Pawn(true, make_pair(6, 6)), new Pawn(true, make_pair(6, 7))},
             {new Rook(true, make_pair(7, 0)), new Knight(true, make_pair(7, 1)), new Bishop(true, make_pair(7, 2)), new Queen(true, make_pair(7, 3)), new King(true, make_pair(7, 4)), new Bishop(true, make_pair(7, 5)), new Knight(true, make_pair(7, 6)), new Rook(true, make_pair(7, 7))},
         };
+        
+        isWhiteTurn = true;
+        isCheck = false;
         
         cout << "A new chess game is started!" << endl;
     }
@@ -294,10 +303,15 @@ public:
         //Check if piece can be moved from 'from' to 'to'
         
         //1. Check that 'to' is a legal move from from
-        if(!fromPiece->isLegalMove(toPair))
-        {
-            cout << fromPiece << " cannot move to " << to << "!" << endl;
+        //Try to cast piece to pawn otherwise fallback to regular piece
+        Pawn * pawnTest = dynamic_cast<Pawn*>(fromPiece);
+        if(  (pawnTest && !pawnTest->isLegalPawnMove(toPair, _board)) ||
+             (!pawnTest && !fromPiece->isLegalMove(toPair))
+           ) {
+           cout << *fromPiece << " cannot move to " << to << "!" << endl;
+            return;
         }
+        
         
         //If legal move, check that no obstructions from 'from' to 'to', unless it's a knight
         
@@ -320,7 +334,7 @@ public:
                 //If check still there, move is illegal
                 if(moveCausedCheck(isWhiteTurn))
                 {
-                    cout << _board[toPair.first][toPair.second] << " cannot move to " << to << "!" << endl;
+                    cout << *_board[toPair.first][toPair.second] << " cannot move to " << to << "!" << endl;
                     
                     //reverse and return
                     _board[fromPair.first][fromPair.second] = _board[toPair.first][toPair.second];
@@ -330,6 +344,11 @@ public:
                 
                 //If reach this point here, it means that the move causes the check to be gone. Still need to verify
                 //Move validity (the destination doesn't have a piece of the same color as us) -> can be done as regular check (outside this if statement)
+                
+                //Reverse first
+                _board[fromPair.first][fromPair.second] = _board[toPair.first][toPair.second];
+                _board[toPair.first][toPair.second] = tempDestinationPieceCopy;
+                
             }
             
             
@@ -340,9 +359,11 @@ public:
             {
                 //Just move the piece to destination
                 _board[toPair.first][toPair.second] = _board[fromPair.first][fromPair.second];
+                _board[toPair.first][toPair.second]->updateLocation(toPair);    //Update location property of the piece
+                
                 _board[fromPair.first][fromPair.second] = NULL;
                 
-                cout << destinationPiece << " moves from " << from << " to " << to << endl;
+                cout << *_board[toPair.first][toPair.second] << " moves from " << from << " to " << to << endl;
                 
                 //No check
                 isCheck = false;
@@ -351,9 +372,11 @@ public:
             {
                 //Move and eat
                 _board[toPair.first][toPair.second] = _board[fromPair.first][fromPair.second];
+                _board[toPair.first][toPair.second]->updateLocation(toPair);    //Update location property of the piece
+                
                 _board[fromPair.first][fromPair.second] = NULL;
                 
-                cout << destinationPiece << " moves from " << from << " to " << to << " taking " << destinationPiece << endl;
+                cout << *_board[toPair.first][toPair.second] << " moves from " << from << " to " << to << " taking " << *destinationPiece << endl;
                 
                 //Delete unnecessary piece
                 delete destinationPiece;
@@ -364,7 +387,7 @@ public:
             else
             {
                 //Trying to move to a position containing on of our pieces
-                cout << fromPiece << " cannot move to " << to << "!" << endl;
+                cout << *fromPiece << " cannot move to " << to << "!" << endl;
                 return;
             }
             
@@ -390,9 +413,13 @@ public:
                 
             }
             
-            
             isWhiteTurn = !isWhiteTurn;    //Flip turn
             
+        }
+        else    //No clear path, cannot move
+        {
+            //Trying to move to a position containing on of our pieces
+            cout << *fromPiece << " cannot move to " << to << "!" << endl;
         }
             
     }

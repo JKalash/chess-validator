@@ -22,7 +22,7 @@ public:
     Queen(bool isWhite, const pair<int, int>& initialLocation) : Piece(isWhite, initialLocation) { }
     
     //Force print overload
-    virtual ostream& operator<< (ostream& out) const override
+    virtual ostream& print(ostream& out) const override
     {
         return out << (this->_white ? "White's " : "Black's ") << "Queen";
     }
